@@ -66,8 +66,8 @@ export default function Login() {
       });
 
       setTimeout(() => {
-        router.push("/");
-      }, 2000);
+        router.push("/financeHomePage");
+      }, 1000);
     } catch {
       setSnackbar({
         open: true,

@@ -27,9 +27,11 @@ export async function POST(req: NextRequest) {
       throw new Error("TOKEN_SECRET is not defined");
     }
 
-    const token = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.TOKEN_SECRET,
+      { expiresIn: "1d" }
+    );
 
     const response = NextResponse.json({
       message: "Login successful",
