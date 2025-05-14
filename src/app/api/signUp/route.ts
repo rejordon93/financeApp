@@ -2,10 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/database/prisma";
 import bcryptjs from "bcryptjs";
 
+type SignUpProps = {
+  username: string;
+  email: string;
+  password: string;
+};
+
 export async function POST(req: NextRequest) {
   try {
     const reqBody = await req.json();
-    const { username, email, password } = reqBody;
+    const { username, email, password }: SignUpProps = reqBody;
 
     const findUser = await prisma.user.findUnique({
       where: { email },

@@ -3,9 +3,14 @@ import prisma from "@/database/prisma";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+type LoginProps = {
+  email: string;
+  password: string;
+};
+
 export async function POST(req: NextRequest) {
   try {
-    const { email, password } = await req.json();
+    const { email, password }: LoginProps = await req.json();
 
     const user = await prisma.user.findUnique({
       where: { email },
