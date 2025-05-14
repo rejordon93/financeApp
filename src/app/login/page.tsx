@@ -9,8 +9,12 @@ import {
   TextField,
   Typography,
   Link as MuiLink,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { z } from "zod";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const User = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -24,7 +28,15 @@ export default function Login() {
     {}
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success" as "success" | "error",
+  });
+
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = User.safeParse({ email, password });
 
@@ -37,9 +49,32 @@ export default function Login() {
       return;
     }
 
-    setErrors({}); // Clear errors if form is valid
-    // Add API logic here
-    console.log("Form submitted successfully!");
+    setErrors({});
+
+    try {
+      await axios.post("/api/login", {
+        email,
+        password,
+      });
+
+      setEmail("");
+      setPassword("");
+      setSnackbar({
+        open: true,
+        message: "Login successful!",
+        severity: "success",
+      });
+
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
+    } catch {
+      setSnackbar({
+        open: true,
+        message: "Login failed. Please check your credentials.",
+        severity: "error",
+      });
+    }
   };
 
   return (
@@ -47,16 +82,15 @@ export default function Login() {
       sx={{
         height: "100vh",
         display: "flex",
-        flexDirection: { xs: "column", sm: "row" }, // Stack vertically on small screens
+        flexDirection: { xs: "column", sm: "row" },
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#f5f5f5",
       }}
     >
-      {/* Left side for login form */}
       <Box
         sx={{
-          width: { xs: "100%", sm: "60%" }, // Make form 100% width on smaller screens
+          width: { xs: "100%", sm: "60%" },
           p: 4,
           display: "flex",
           flexDirection: "column",
@@ -64,24 +98,17 @@ export default function Login() {
           alignItems: "center",
         }}
       >
-        {/* Header */}
-        <Typography
-          variant="h3"
-          align="left"
-          gutterBottom
-          sx={{ fontWeight: "bold" }}
-        >
+        <Typography variant="h3" gutterBottom sx={{ fontWeight: "bold" }}>
           Start your journey
         </Typography>
-        <Typography variant="h5" align="left" sx={{ marginBottom: "10px" }}>
+        <Typography variant="h5" sx={{ marginBottom: "10px" }}>
           Login for Finance Freedom
         </Typography>
 
-        {/* Form */}
         <Box
           sx={{
             width: "100%",
-            maxWidth: "500px", // Increased max width
+            maxWidth: "500px",
             p: 4,
             borderRadius: 3,
             boxShadow: 3,
@@ -99,11 +126,6 @@ export default function Login() {
               error={!!errors.email}
               helperText={errors.email}
               required
-              sx={{
-                borderRadius: "20px", // Rounded edges
-                height: "50px", // Increased height for better visibility
-                fontSize: "18px", // Increased font size
-              }}
             />
 
             <TextField
@@ -116,11 +138,6 @@ export default function Login() {
               error={!!errors.password}
               helperText={errors.password}
               required
-              sx={{
-                borderRadius: "20px", // Rounded edges
-                height: "50px", // Increased height
-                fontSize: "18px", // Increased font size
-              }}
             />
 
             <Box mt={2}>
@@ -130,13 +147,13 @@ export default function Login() {
                 type="submit"
                 fullWidth
                 sx={{
-                  backgroundColor: "#1877f2", // Facebook Blue
-                  borderRadius: "20px", // Rounded button
+                  backgroundColor: "#1877f2",
+                  borderRadius: "20px",
                   ":hover": {
-                    backgroundColor: "#166fe5", // Hover effect
+                    backgroundColor: "#166fe5",
                   },
-                  height: "60px", // Increased height for button
-                  fontSize: "18px", // Increased font size for button
+                  height: "60px",
+                  fontSize: "18px",
                 }}
               >
                 Login
@@ -144,7 +161,6 @@ export default function Login() {
             </Box>
           </form>
 
-          {/* Sign Up Link */}
           <Box mt={2} textAlign="center">
             <Typography variant="body2">
               Don&apos;t have an account?{" "}
@@ -156,16 +172,31 @@ export default function Login() {
         </Box>
       </Box>
 
-      {/* Right side for the image */}
       <Box
         sx={{
-          width: { xs: "100%", sm: "50%" }, // Make image 100% width on smaller screens
+          width: { xs: "100%", sm: "50%" },
           height: "100vh",
           backgroundImage: `url(${img.src})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       />
+
+      {/* Snackbar for messages */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
