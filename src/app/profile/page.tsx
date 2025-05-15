@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { z } from "zod";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 // Schema for validation
 const ProfileSchema = z.object({
@@ -27,11 +28,13 @@ export default function Profile() {
   const [lastname, setLastname] = useState("");
   const [city, setCity] = useState("");
   const [region, setRegion] = useState("");
-  const [income, setIncome] = useState("");
-  const [taxRate, setTaxRate] = useState("");
+  const [income, setIncome] = useState(0);
+  const [taxRate, setTaxRate] = useState(0);
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,17 +42,13 @@ export default function Profile() {
     setSuccessMessage("");
     setErrorMessage("");
 
-    // Parse input as numbers
-    const parsedIncome = Number(income);
-    const parsedTaxRate = Number(taxRate);
-
     const result = ProfileSchema.safeParse({
       firstname,
       lastname,
       city,
       region,
-      income: parsedIncome,
-      taxRate: parsedTaxRate,
+      income,
+      taxRate,
     });
 
     if (!result.success) {
@@ -61,7 +60,7 @@ export default function Profile() {
 
     try {
       // Example success state — replace with API call later
-      axios.post("/api/profile", {
+      axios.post("/api/Profile", {
         firstname,
         lastname,
         city,
@@ -69,7 +68,17 @@ export default function Profile() {
         income,
         taxRate,
       });
-      setSuccessMessage("Profile updated successfully!");
+      setCity("");
+      setFirstname("");
+      setIncome(0);
+      setLastname("");
+      setRegion("");
+      setTaxRate(0);
+
+      setTimeout(() => {
+        router.push("/financeHomePage");
+        setSuccessMessage("Profile updated successfully!");
+      }, 1000);
     } catch (error: unknown) {
       if (error instanceof Error) {
         setErrorMessage(error.message);
@@ -150,7 +159,7 @@ export default function Profile() {
             label="Income"
             type="number"
             value={income}
-            onChange={(e) => setIncome(e.target.value)}
+            onChange={(e) => setIncome(parseInt(e.target.value) || 0)}
             required
             fullWidth
           />
@@ -158,7 +167,7 @@ export default function Profile() {
             label="Tax Rate"
             type="number"
             value={taxRate}
-            onChange={(e) => setTaxRate(e.target.value)}
+            onChange={(e) => setTaxRate(parseInt(e.target.value) || 0)}
             required
             fullWidth
           />
