@@ -6,8 +6,17 @@ import { ProfileType } from "@/app/types/page";
 export async function POST(req: NextRequest) {
   try {
     const reqBody = await req.json(); // Await the parsing of the request body
-    const { firstname, lastname, city, region, income, taxRate }: ProfileType =
-      reqBody;
+    const {
+      firstname,
+      lastname,
+      city,
+      region,
+      income,
+      taxRate,
+      bio,
+      debt,
+      goals,
+    }: ProfileType = reqBody;
 
     const token = req.cookies.get("token")?.value;
 
@@ -49,6 +58,9 @@ export async function POST(req: NextRequest) {
         region,
         income,
         taxRate,
+        debt,
+        goals,
+        bio,
         user: {
           connect: { id: user.id },
         },

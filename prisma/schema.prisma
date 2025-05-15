@@ -24,8 +24,11 @@ model Profile {
   lastname  String
   city      String
   region    String
+  goals     String
+  debt     Int
   income    Int
   taxRate   Float
+  bio       String
   user      User   @relation(fields: [userId], references: [id])
   userId    Int    @unique
 }

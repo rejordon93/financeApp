@@ -5,4 +5,7 @@ export type ProfileType = {
   region: string;
   income: number;
   taxRate: number;
+  bio: string;
+  debt: number;
+  goals: string;
 };
