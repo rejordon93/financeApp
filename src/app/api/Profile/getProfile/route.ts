@@ -37,10 +37,8 @@ export async function GET(req: NextRequest) {
       lastname: profile.lastname,
       city: profile.city,
       region: profile.region,
-      income: profile.income,
-      taxRate: profile.taxRate,
-      debt: profile.debt,
-      bio: profile.bio,
+      cellPhone: profile.cellPhone,
+      zipCode: profile.zipCode,
       goals: profile.goals,
     });
   } catch (error) {

@@ -10,11 +10,9 @@ export async function POST(req: NextRequest) {
       firstname,
       lastname,
       city,
-      region,
-      income,
-      taxRate,
-      bio,
-      debt,
+      region, // Cast to match Prisma's $Enums.Region type
+      zipCode,
+      cellPhone,
       goals,
     }: ProfileType = reqBody;
 
@@ -56,11 +54,9 @@ export async function POST(req: NextRequest) {
         lastname,
         city,
         region,
-        income,
-        taxRate,
-        debt,
+        cellPhone,
+        zipCode,
         goals,
-        bio,
         user: {
           connect: { id: user.id },
         },

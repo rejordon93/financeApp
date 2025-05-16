@@ -1,11 +1,16 @@
+export enum Region {
+  NORTH = "North",
+  SOUTH = "South",
+  EAST = "East",
+  WEST = "West",
+}
+
 export type ProfileType = {
   firstname: string;
   lastname: string;
   city: string;
   region: string;
-  income: number;
-  taxRate: number;
-  bio: string;
-  debt: number;
   goals: string;
+  cellPhone: string;
+  zipCode: string;
 };
