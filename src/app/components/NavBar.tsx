@@ -37,7 +37,7 @@ export default function NavBar() {
             color: "black",
           }}
         >
-          {username}
+          <Link href="/financeHomePage">{username}</Link>
         </Typography>
 
         {/* Right side: Navigation links */}
