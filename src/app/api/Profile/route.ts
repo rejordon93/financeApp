@@ -5,12 +5,12 @@ import { ProfileType } from "@/app/types/page";
 
 export async function POST(req: NextRequest) {
   try {
-    const reqBody = await req.json(); // Await the parsing of the request body
+    const reqBody = await req.json();
     const {
       firstname,
       lastname,
       city,
-      region, // Cast to match Prisma's $Enums.Region type
+      region,
       zipCode,
       cellPhone,
       goals,

@@ -13,17 +13,15 @@ import { z } from "zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-// Validation schema
+// Updated Validation Schema
 const ProfileSchema = z.object({
   firstname: z.string().min(1, "First name is required"),
   lastname: z.string().min(1, "Last name is required"),
   city: z.string().min(1, "City is required"),
   region: z.string().min(1, "State/Region is required"),
-  income: z.number({ invalid_type_error: "Income must be a number" }),
-  taxRate: z.number({ invalid_type_error: "Tax Rate must be a number" }),
-  debt: z.number({ invalid_type_error: "Debt must be a number" }),
+  cellPhone: z.number({ invalid_type_error: "Cell phone must be a number" }),
+  zipCode: z.number({ invalid_type_error: "Zip code must be a number" }),
   goals: z.string().min(1, "Goals are required"),
-  bio: z.string().min(1, "Bio is required"),
 });
 
 export default function AddProfile() {
@@ -31,11 +29,9 @@ export default function AddProfile() {
   const [lastname, setLastname] = useState("");
   const [city, setCity] = useState("");
   const [region, setRegion] = useState("");
-  const [income, setIncome] = useState<number>();
-  const [taxRate, setTaxRate] = useState<number>();
-  const [debt, setDebt] = useState<number>();
+  const [cellPhone, setCellPhone] = useState<number>();
+  const [zipCode, setZipCode] = useState<number>();
   const [goals, setGoals] = useState("");
-  const [bio, setBio] = useState("");
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -53,11 +49,9 @@ export default function AddProfile() {
       lastname: lastname.trim(),
       city,
       region,
-      income,
-      taxRate,
-      debt,
+      cellPhone,
+      zipCode,
       goals,
-      bio,
     });
 
     if (!result.success) {
@@ -73,22 +67,18 @@ export default function AddProfile() {
         lastname,
         city,
         region,
-        income,
-        taxRate,
-        bio,
+        cellPhone,
+        zipCode,
         goals,
-        debt,
       });
 
       setFirstname("");
       setLastname("");
       setCity("");
       setRegion("");
-      setIncome(0);
-      setTaxRate(0);
-      setDebt(0);
+      setCellPhone(undefined);
+      setZipCode(undefined);
       setGoals("");
-      setBio("");
 
       setTimeout(() => {
         setSuccessMessage("Profile updated successfully!");
@@ -177,26 +167,19 @@ export default function AddProfile() {
               fullWidth
             />
             <TextField
-              label="Income (USD)"
+              label="Cell Phone"
               type="number"
-              value={income}
-              onChange={(e) => setIncome(parseInt(e.target.value) || 0)}
+              value={cellPhone ?? ""}
+              onChange={(e) => setCellPhone(parseInt(e.target.value) || 0)}
               required
               fullWidth
             />
             <TextField
-              label="Tax Rate (%)"
+              label="Zip Code"
               type="number"
-              value={taxRate}
-              onChange={(e) => setTaxRate(parseInt(e.target.value) || 0)}
+              value={zipCode ?? ""}
+              onChange={(e) => setZipCode(parseInt(e.target.value) || 0)}
               required
-              fullWidth
-            />
-            <TextField
-              label="Debt (USD)"
-              type="number"
-              value={debt}
-              onChange={(e) => setDebt(parseInt(e.target.value) || 0)}
               fullWidth
             />
             <TextField
@@ -205,15 +188,6 @@ export default function AddProfile() {
               onChange={(e) => setGoals(e.target.value)}
               multiline
               rows={3}
-              fullWidth
-            />
-            <TextField
-              label="Short Bio"
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-              multiline
-              rows={3}
-              helperText="Tell us a bit about yourself"
               fullWidth
             />
 

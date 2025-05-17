@@ -73,7 +73,7 @@ export default function SignUp() {
       setOpen(true);
       setTimeout(() => {
         router.push("/login");
-      }, 3000);
+      }, 1000);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         const serverMsg = err.response?.data?.message || "Signup failed.";

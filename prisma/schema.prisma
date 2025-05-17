@@ -29,8 +29,8 @@ model Profile {
   city      String
   region    String
   goals     String
-  cellPhone     String?
-  zipCode       String
+  cellPhone     Int
+  zipCode       Int
   user      User   @relation(fields: [userId], references: [id])
   userId    Int    @unique
 }

@@ -90,7 +90,6 @@ export default function Profile() {
         sx={{
           width: "100%",
           maxWidth: "60%",
-          height: "50%",
           p: 4,
           borderRadius: 3,
           boxShadow: "0 4px 10px rgb(0 0 0 / 0.1)",
@@ -108,40 +107,17 @@ export default function Profile() {
           </Typography>
 
           <Typography variant="body1" gutterBottom>
-            💰 <strong>Income:</strong> ${data?.income.toLocaleString()}
-          </Typography>
-
-          <Typography variant="body1" gutterBottom>
-            🧾 <strong>Tax Rate:</strong> {data?.taxRate}%
-          </Typography>
-
-          <Typography variant="body1" gutterBottom>
             🎯 <strong>Goals:</strong> {data?.goals || "None"}
           </Typography>
 
           <Typography variant="body1" gutterBottom>
-            💳 <strong>Debt:</strong> ${data?.debt.toLocaleString()}
+            📞 <strong>Cell Phone:</strong> {data?.cellPhone || "N/A"}
+          </Typography>
+
+          <Typography variant="body1" gutterBottom>
+            🏤 <strong>Zip Code:</strong> {data?.zipCode}
           </Typography>
         </Box>
-
-        {data?.bio && (
-          <Box
-            mt={3}
-            p={2}
-            sx={{
-              backgroundColor: "#fafafa",
-              borderRadius: 2,
-              boxShadow: "inset 0 0 5px rgba(0,0,0,0.05)",
-            }}
-          >
-            <Typography variant="subtitle1" fontWeight={600} gutterBottom>
-              📝 Bio
-            </Typography>
-            <Typography variant="body2" sx={{ whiteSpace: "pre-wrap" }}>
-              {data.bio}
-            </Typography>
-          </Box>
-        )}
 
         <Box mt={4} display="flex" justifyContent="flex-end">
           <Button

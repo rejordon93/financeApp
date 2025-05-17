@@ -6,10 +6,8 @@ export const ProfileSchema = z.object({
   lastname: z.string(),
   city: z.string(),
   region: z.string(),
-  income: z.number(),
-  taxRate: z.number(),
-  bio: z.string(),
-  debt: z.number(),
+  cellPhone: z.number(),
+  zipCode: z.number(),
   goals: z.string(),
 });
 
